@@ -1,0 +1,15 @@
+{% extends "body.html" %}
+{% block title %}{{ config.NAME }} - Home{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">{{ config.NAME }}</h1>
+    <p class="lead">{{ config.NAME}} is our platform for generating and distributing our partners licence keys, discount codes and free credit.</p>
+    <hr class="my-4">
+    <p>
+        Just login with you Platform account and you'll be able to access their wide variety of tools!
+    </p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('oauth.login') }}" role="button">Login now</a>
+    </p>
+</div>
+{% endblock %}
