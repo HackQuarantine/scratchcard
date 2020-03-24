@@ -1,0 +1,16 @@
+runtime: python37
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto
+
+
+
+beta_settings:
+  cloud_sql_instances: 'trusty-coder-271017:europe-west1:hackq-real'
+
+
+vpc_access_connector:
+  name: "projects/trusty-coder-271017/locations/europe-west1/connectors/app-connector"
+

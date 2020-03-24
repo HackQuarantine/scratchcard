@@ -1,0 +1,112 @@
+{% extends "body.html" %}
+{% block title %}{{ config.NAME }} - Admin!{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Promocode management</h1>
+</div>
+
+<h2>Existing codes</h2>
+<div class="card-columns">
+    {% for code in codes %}
+
+    <div class="card">
+        <div style="margin: 1em;">
+            <img class="card-img-top" src="{{ code.banner }}" alt="Logo">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ code.title }}</h5>
+            <p class="card-text">
+                {{ code.description|safe }}
+            </p>
+            <p>
+                {% if code.student_status %}
+                    <span class="badge badge-info">Student Only</span>
+                {% endif %}
+                {% if code.limit and code.limit != 0 %}
+                    <span class="badge badge-primary">Total: {{ code.limit }}</span>
+                {% else %}
+                    <span class="badge badge-primary">No Limit</span>
+                {% endif %}
+ 
+            </p>
+            <div class="text-center">
+                <form method="post" action="/console/admin/delete/{{ code.id }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br />
+<h2>Setup new promo code</h2>
+<form action="admin" method="POST">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" aria-describedby="title" placeholder="Title" name="title">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" class="form-control" id="description" aria-describedby="description" placeholder="Description" name="description">
+    </div>
+    <div class="form-group">
+        <label for="banner">Banner URL (Upload to a GCP bucket if needed)</label>
+        <input type="url" class="form-control" id="banner" aria-describedby="Banner URL" placeholder="Banner URL" name="banner_url">
+    </div>
+
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="student_only" name="student_only">
+        <label class="form-check-label" for="student_only">Student Only? (validates against student status)</label>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="unique_code" name="unique_code">
+        <label class="form-check-label" for="unique_code">Unique code per person? (Otherwise it's the same code for everyone)</label>
+    </div>
+
+
+    <h5>Code Details</h5>
+    <div id="single_code">
+        <div class="form-group">
+            <label for="code"></label>
+            <input type="text" class="form-control" id="code" aria-describedby="code" placeholder="Code" name="code">
+        </div>
+
+        <div class="form-group limited">
+            <label for="limit">Limit how many Hackers can claim a code, keep empty if no limit.</label>
+            <input name="limit" type="number" class="form-control" id="limit" aria-describedby="limit" placeholder="Claim limit">
+        </div>
+    </div>
+
+    <div id="batch_codes">
+        <div class="form-group">
+            <label for="codes">Batch of codes (1 per line)</label>
+            <textarea name="codes" class="form-control" id="codes" rows="8"></textarea>
+        </div>
+    </div>
+
+    <button type="submit" value="Submit" class="btn btn-primary">Add</button>
+</form>
+
+<br />
+
+<!-- Script to hide based on whenever -->
+<script>
+
+    const checkbox = document.getElementById('unique_code')
+    checkbox.checked = false;
+    document.getElementById('single_code').style.display = 'block';
+    document.getElementById('batch_codes').style.display = 'none';
+
+    checkbox.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            document.getElementById('single_code').style.display = 'none';
+            document.getElementById('batch_codes').style.display = 'block';
+        } else {
+            document.getElementById('single_code').style.display = 'block';
+            document.getElementById('batch_codes').style.display = 'none';
+        }
+    });
+
+
+</script>
+{% endblock %}

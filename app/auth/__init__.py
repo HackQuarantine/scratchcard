@@ -9,15 +9,23 @@ from app.db import db, OAuth, User
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
 
+# Extract everything to be loaded into our local DB
+def process_userinfo(user_info):
+    curr = User()
+    curr.id = user_info['sub']
+    curr.username = user_info['name']
+    if 'https://hackquarantine.com/user_metadata' in user_info:
+        curr.student_status = bool(user_info['https://hackquarantine.com/user_metadata']['student_status']) or False
+    # only me, hacky but quick
+    curr.admin = (user_info['sub'] == config.ADMIN_ID)
+    return curr
+
 @login_manager.user_loader
 def userloader(user_id):
     curr = User.query.get(user_id)
     if curr is None:
-        print('FETCHING')
         user_info = hqauth.session.get(config.USER_INFO).json()
-        curr = User()
-        curr.id = user_info['sub']
-        curr.username = user_info['name']
+        curr = process_userinfo(user_info)
         db.session.add(curr)
         db.session.commit()
     return curr

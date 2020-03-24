@@ -7,14 +7,17 @@ Flask-Caching==1.8.0
 Flask-Dance==3.0.0
 Flask-Login==0.5.0
 Flask-SQLAlchemy==2.4.1
+Flask-WTF==0.14.3
+gunicorn==20.0.4
 httplib2==0.17.0
 idna==2.9
 itsdangerous==1.1.0
 Jinja2==2.11.1
 MarkupSafe==1.1.1
+mysqlclient==1.4.6
 oauth2==1.9.0.post1
 oauthlib==3.1.0
-pkg-resources==0.0.0
+psycopg2==2.8.4
 python-dotenv==0.12.0
 requests==2.23.0
 requests-oauthlib==1.3.0
@@ -24,3 +27,7 @@ SQLAlchemy-Utils==0.36.3
 urllib3==1.25.8
 URLObject==2.4.3
 Werkzeug==1.0.0
+WTForms==2.2.1
+google-python-cloud-debugger
+pg8000==1.14.1
+google-cloud-secret-manager

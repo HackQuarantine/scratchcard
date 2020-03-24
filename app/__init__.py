@@ -1,5 +1,4 @@
 from flask import Flask, session
-from flask_caching import Cache
 from flask_bootstrap import Bootstrap
 
 from app.auth import hqauth as auth, login_manager
@@ -18,8 +17,8 @@ def create_app():
     app.config['CACHE_TYPE'] = 'simple'
     app.config['CACHE_DEFAULT_TIMEOUT'] = 300
     app.config['NAME'] = config.NAME or 'cd'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    cache = Cache(app)
     bootstrap = Bootstrap(app)
 
     app.register_blueprint(admin, url_prefix='/admin')

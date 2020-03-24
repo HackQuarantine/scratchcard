@@ -34,6 +34,9 @@
                     <span class="navbar-text">
                         <i>{{ current_user.username }}</i>
                     </span>
+                    {% if current_user.is_admin() %}
+                    {{ render_nav_item('console.admin', 'Admin') }}
+                    {% endif %}
                     {{ render_nav_item('oauth.logout', 'Logout') }}
                     {% else %}
                     {{ render_nav_item('oauth.login', 'Login via HQ Platform') }}

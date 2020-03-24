@@ -7,21 +7,26 @@
 </div>
 <div class="card-columns">
     {% for code in codes %}
-
     <div class="card">
         <div style="margin: 1em;">
             <img class="card-img-top" src="{{ code.banner }}" alt="Logo">
         </div>
         <div class="card-body">
-            <h5 class="card-title">{{ code.name }}</h5>
+            <h5 class="card-title">{{ code.title }}</h5>
             <p class="card-text">
-                {{ code.description }}
+                {{ code.description|safe }}
             </p>
             <div class="text-center">
-                {% if code.claimed and code.code %}
-                <p class="card-text">{{ code.code}}</p>
+                {% if code.is_claimed and code.user_code %}
+                <p class="card-text">Your promo code is: <pre>{{ code.user_code}}</pre></p>
                 {% else %}
-                <a href="#" class="btn btn-primary">Claim!</a>
+                {% if code.avaliable %}
+                    <form method="post" action="/console/claim/{{ code.id }}">
+                        <button type="submit" class="btn btn-primary">Claim</button>
+                    </form>
+                {% else %}
+                    <p>This code isn't currently available</p>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
